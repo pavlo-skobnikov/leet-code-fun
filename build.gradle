@@ -1,0 +1,15 @@
+plugins {
+    id 'application'
+}
+
+group = 'pavlo.skobnikov'
+version = '1.0.0'
+sourceCompatibility = '17'
+
+application {
+    mainClass = 'leet.code.Main'
+}
+
+sourceSets {
+  main.java.srcDirs = [ 'src/java/main/java' ]
+}

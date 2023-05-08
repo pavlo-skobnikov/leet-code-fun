@@ -158,4 +158,122 @@ public class Level1 {
     // following condition will be true.
     return sIdx == s.length();
   }
+
+  /* DAY 3 */
+
+  /**
+   * 21. Merge Two Sorted Lists
+   * https://leetcode.com/problems/merge-two-sorted-lists/?envType=study-plan&id=level-1&languageTags=java
+   *
+   * <p>You are given the heads of two sorted linked lists list1 and list2.
+   *
+   * <p>Merge the two lists in a one sorted list. The list should be made by splicing together the
+   * nodes of the first two lists.
+   *
+   * <p>Return the head of the merged linked list.
+   */
+
+  /* Definition for singly-linked list. */
+  public class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {}
+
+    ListNode(int val) {
+      this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+      this.val = val;
+      this.next = next;
+    }
+  }
+
+  public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+    // Guard-clause to check if either of the lists is null.
+    if (list1 == null) return list2;
+    if (list2 == null) return list1;
+
+    // Initialize the head of the merged list.
+    ListNode mergedListHead;
+
+    // Initialize the pointer for the merged list.
+    ListNode mergedListTail;
+
+    // Initialize the pointers for the two lists.
+    ListNode list1Ptr = list1;
+    ListNode list2Ptr = list2;
+
+    // Decide which list's head will be the merged list's head.
+    if (list1.val <= list2.val) {
+      mergedListHead = new ListNode(list1.val);
+      list1Ptr = list1Ptr.next;
+    } else {
+      mergedListHead = new ListNode(list2.val);
+      list2Ptr = list2Ptr.next;
+    }
+
+    // Set the pointer to the merged list's head.
+    mergedListTail = mergedListHead;
+
+    // Iteratively step through the lists until we reach the end of either one.
+    while (list1Ptr != null && list2Ptr != null) {
+      // Create a new node for the merged list.
+      mergedListTail.next = new ListNode();
+
+      // Assign the next node to the merged list's tail.
+      if (list1Ptr.val <= list2Ptr.val) {
+        mergedListTail.next = list1Ptr;
+        list1Ptr = list1Ptr.next;
+      } else {
+        mergedListTail.next = list2Ptr;
+        list2Ptr = list2Ptr.next;
+      }
+
+      mergedListTail = mergedListTail.next;
+    }
+
+    // If the first list has remaining nodes, add them to the merged list.
+    if (list1Ptr != null) {
+      mergedListTail.next = list1Ptr;
+    }
+
+    // If the second list has remaining nodes, add them to the merged list.
+    if (list2Ptr != null) {
+      mergedListTail.next = list2Ptr;
+    }
+
+    // Return the head of the merged list.
+    return mergedListHead;
+  }
+
+  /**
+   * 206. Reverse Linked List
+   * https://leetcode.com/problems/reverse-linked-list/?envType=study-plan&id=level-1&languageTags=java
+   *
+   * <p>Given the head of a singly linked list, reverse the list, and return the reversed list.
+   */
+  public ListNode reverseList(ListNode head) {
+    // Guard-clause to check if the list is null or has only one node.
+    if (head == null || head.next == null) return head;
+
+    ListNode prev = null;
+    ListNode curr = head;
+
+    // Iterate through the list until we reach the end.
+    while (curr != null) {
+      // Store the next node.
+      ListNode next = curr.next;
+
+      // Reverse the current node's pointer.
+      curr.next = prev;
+
+      // Move the pointers forward.
+      prev = curr;
+      curr = next;
+    }
+
+    return prev;
+  }
 }

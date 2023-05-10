@@ -1,5 +1,6 @@
 package leet.code.seventyfive;
 
+
 public class Level1 {
 
   /* DAY 1 */
@@ -275,5 +276,95 @@ public class Level1 {
     }
 
     return prev;
+  }
+
+  /* DAY 4 */
+
+  /**
+   * 876. Middle of the Linked List
+   * https://leetcode.com/problems/middle-of-the-linked-list/?envType=study-plan&id=level-1
+   *
+   * <p>Given the head of a singly linked list, return the middle node of the linked list.
+   *
+   * <p>If there are two middle nodes, return the second middle node.
+   */
+  public ListNode middleNode(ListNode head) {
+    // Node pointer for iteration.
+    ListNode curr = head;
+
+    // Variable to store the length of the list.
+    int length = 0;
+
+    // Find the length of the list.
+    while (curr != null) {
+      length++;
+
+      curr = curr.next;
+    }
+
+    // Find the middle node according to the task specification.
+    length = (length / 2) + 1;
+
+    // Reset the pointer for iteration.
+    curr = head;
+
+    // Iterate through the list until we reach the middle node.
+    for (int i = 1; i < length; i++) {
+      curr = curr.next;
+    }
+
+    return curr;
+  }
+
+  /**
+   * 142. Linked List Cycle II
+   * https://leetcode.com/problems/linked-list-cycle-ii/?envType=study-plan&id=level-1
+   *
+   * <p>Given the head of a linked list, return the node where the cycle begins. If there is no
+   * cycle, return null.
+   *
+   * <p>There is a cycle in a linked list if there is some node in the list that can be reached
+   * again by continuously following the next pointer. Internally, pos is used to denote the index
+   * of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no
+   * cycle. Note that pos is not passed as a parameter.
+   *
+   * <p>Do not modify the linked list.
+   */
+  public ListNode detectCycle(ListNode head) {
+    // Guard-clause to check if the list is null or has only one node.
+    if (head == null || head.next == null) return null;
+
+    // Node pointer for iteration.
+    ListNode slowPtr = head;
+    ListNode fastPtr = head;
+
+    // Iterate through the list until the pointers meet.
+    while (fastPtr != null && fastPtr.next != null) {
+      // Move the slow pointer by one node.
+      slowPtr = slowPtr.next;
+
+      // Move the fast pointer by two nodes.
+      fastPtr = fastPtr.next.next;
+
+      // If the pointers meet, there is a cycle.
+      if (slowPtr == fastPtr) {
+        // Reset the slow pointer to the head.
+        slowPtr = head;
+
+        // Iterate through the list until the pointers meet again.
+        // The node where the pointers meet is the node where the cycle begins.
+        // This is guaranteed by Floyd's cycle-finding algorithm.
+        while (slowPtr != fastPtr) {
+          slowPtr = slowPtr.next;
+          fastPtr = fastPtr.next;
+        }
+
+        // Return the node where the cycle begins.
+        return slowPtr;
+      }
+    }
+
+    // Fallback to return null if there is no cycle.
+    return null;
   }
 }

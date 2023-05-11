@@ -1,5 +1,7 @@
 package leet.code.seventyfive;
 
+import java.util.HashMap;
+import java.util.Map;
 
 public class Level1 {
 
@@ -366,5 +368,87 @@ public class Level1 {
 
     // Fallback to return null if there is no cycle.
     return null;
+  }
+
+  /* DAY 5 */
+
+  /**
+   * 121. Best Time to Buy and Sell Stock
+   * https://leetcode.com/problems/best-time-to-buy-and-sell-stock/?envType=study-plan&id=level-1
+   *
+   * <p>You are given an array prices where prices[i] is the price of a given stock on the ith day.
+   *
+   * <p>You want to maximize your profit by choosing a single day to buy one stock and choosing a
+   * different day in the future to sell that stock.
+   *
+   * <p>Return the maximum profit you can achieve from this transaction. If you cannot achieve any
+   * profit, return 0.
+   */
+  public int maxProfit(int[] prices) {
+    // Guard-clause to check if the array has only one element.
+    if (prices.length <= 1) return 0;
+
+    int lowestPriceSeenSoFar = prices[0];
+    int currentMaxPossibleProfit = 0;
+
+    for (int i = 1; i < prices.length; i++) {
+      // If the current price is lower than the lowest price seen so far, update the
+      // lowest price.
+      if (prices[i] < lowestPriceSeenSoFar) {
+        lowestPriceSeenSoFar = prices[i];
+      }
+
+      final int profitIfSoldToday = prices[i] - lowestPriceSeenSoFar;
+      // If the current price minus the lowest price seen so far is greater than the
+      // current max possible profit, update it.
+      if (profitIfSoldToday > currentMaxPossibleProfit) {
+        currentMaxPossibleProfit = profitIfSoldToday;
+      }
+    }
+
+    return currentMaxPossibleProfit;
+  }
+
+  /**
+   * 409. Longest Palindrome
+   * https://leetcode.com/problems/longest-palindrome/?envType=study-plan&id=level-1
+   *
+   * <p>Given a string s which consists of lowercase or uppercase letters, return the length of the
+   * longest palindrome that can be built with those letters.
+   *
+   * <p>Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
+   */
+  public int longestPalindrome(String s) {
+    // Guard-clause to check if the string is a single character long.
+    if (s.length() == 1) return 1;
+
+    // Map to store the frequency of each character in the string.
+    final Map<Character, Integer> charFrequencyMap = new HashMap<>();
+
+    // Iterate through the string and store the frequency of each character.
+    for (int i = 0; i < s.length(); i++) {
+      final char currentChar = s.charAt(i);
+
+      int currentCharFrequency = charFrequencyMap.getOrDefault(currentChar, 0);
+
+      charFrequencyMap.put(currentChar, ++currentCharFrequency);
+    }
+
+    int totalSumOfEvenFrequencies = 0;
+    boolean isThereAnOddFrequency = false;
+
+    // Iterate through the map and calculate the sum of even frequencies and the
+    // biggest odd frequency.
+    for (int frequency : charFrequencyMap.values()) {
+      if (frequency % 2 == 0) {
+        totalSumOfEvenFrequencies += frequency;
+      } else {
+        isThereAnOddFrequency = true;
+
+        totalSumOfEvenFrequencies += frequency - 1;
+      }
+    }
+
+    return totalSumOfEvenFrequencies + (isThereAnOddFrequency ? 1 : 0);
   }
 }

@@ -1,7 +1,12 @@
 package leet.code.seventyfive;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Stack;
 
 public class Level1 {
 
@@ -450,5 +455,131 @@ public class Level1 {
     }
 
     return totalSumOfEvenFrequencies + (isThereAnOddFrequency ? 1 : 0);
+  }
+
+  /* DAY 6 */
+
+  class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+      val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+      val = _val;
+      children = _children;
+    }
+  }
+
+  /**
+   * 589. N-ary Tree Preorder Traversal
+   * https://leetcode.com/problems/n-ary-tree-preorder-traversal/?envType=study-plan&id=level-1
+   *
+   * <p>Given the root of an n-ary tree, return the preorder traversal of its nodes' values.
+   *
+   * <p>Nary-Tree input serialization is represented in their level order traversal. Each group of
+   * children is separated by the null value (See examples)
+   */
+  public List<Integer> preorder(Node root) {
+    // Result list to store the preorder traversal.
+    final List<Integer> preorderList = new ArrayList<>();
+    // Guard-clause to check if the root is null.
+    if (root == null) return preorderList;
+    // Stack to store the nodes to visit.
+    // We use a stack specifically because we want to visit the latest
+    // encountered node's children first from left to right.
+    final Stack<Node> nodesToVisit = new Stack<>();
+
+    // Add the root node to the stack.
+    nodesToVisit.push(root);
+
+    while (!nodesToVisit.isEmpty()) {
+      // Pop the top node from the stack.
+      root = nodesToVisit.pop();
+
+      // Add the current node's value to the result list.
+      preorderList.add(root.val);
+
+      // Put the children of the current node on the stack with the
+      // leftmost child on top of the stack.
+      this.putNodeChildrenOnStack(nodesToVisit, root);
+    }
+
+    return preorderList;
+  }
+
+  // Helper method to put the children of a node on the stack in reverse order.
+  // This is done to ensure that the children are visited in the correct order,
+  // i.e., from left to right.
+  private void putNodeChildrenOnStack(final Stack<Node> nodesToVisit, final Node node) {
+    for (int i = node.children.size() - 1; i >= 0; i--) {
+      nodesToVisit.push(node.children.get(i));
+    }
+  }
+
+  public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {}
+
+    TreeNode(int val) {
+      this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+      this.val = val;
+      this.left = left;
+      this.right = right;
+    }
+  }
+
+  /**
+   * 102. Binary Tree Level Order Traversal
+   * https://leetcode.com/problems/binary-tree-level-order-traversal/?envType=study-plan&id=level-1
+   *
+   * <p>Given the root of a binary tree, return the level order traversal of its nodes' values.
+   * (i.e., from left to right, level by level).
+   */
+  public List<List<Integer>> levelOrder(TreeNode root) {
+    // Result list to store the level order traversal.
+    final List<List<Integer>> levelOrderTraversal = new ArrayList<>();
+
+    // Guard-clause to check if the root is null.
+    if (root == null) return levelOrderTraversal;
+
+    // Queue to store the nodes to visit on a given iteration.
+    Queue<TreeNode> nodesToVisit = new LinkedList<>();
+
+    // Add the root node to the list.
+    nodesToVisit.add(root);
+
+    while (!nodesToVisit.isEmpty()) {
+      // List to store the values of the nodes on a given level.
+      List<Integer> currentLevelValues = new ArrayList<>();
+
+      final int numberOfNodesOnCurrentLevel = nodesToVisit.size();
+
+      for (int count = 0; count < numberOfNodesOnCurrentLevel; count++) {
+        final TreeNode currentNode = nodesToVisit.poll();
+
+        // Add the current node's children to the next level's list.
+        if (currentNode.left != null) nodesToVisit.add(currentNode.left);
+        if (currentNode.right != null) nodesToVisit.add(currentNode.right);
+
+        // Add the current node's value to the current level's list.
+        currentLevelValues.add(currentNode.val);
+      }
+
+      // Add the current level's list to the result list.
+      levelOrderTraversal.add(currentLevelValues);
+    }
+
+    return levelOrderTraversal;
   }
 }
